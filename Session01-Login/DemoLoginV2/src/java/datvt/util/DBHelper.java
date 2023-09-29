@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package datvt.util;
-
+//NHỚ IMPORT THƯ VIỆN JDBC4.JAR TRONG LIBRARIES CỦA DỰ ÁN
+//NHỚ NHỚ NHỚ NHỚ NHỚ NHỚ
+//MÀY KHÔNG NẠP THƯ VIỆN VÀO THÌ NÓ GIAO TIẾP VỚI DB KIỂU B GÌ?????????????????
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -45,8 +45,9 @@ public class RegistrationDAO implements Serializable {
                 //buoc 5: prepareStatement()
                 stm = con.prepareStatement(sql);
                 //set gia tri cho phan minh moi truy van
-                stm.setInt(1, Integer.valueOf(username));
-                stm.setInt(2, Integer.valueOf(password));
+                stm.setInt(1, Integer.parseInt(username.trim()));
+                System.out.println(username.getClass());
+                stm.setInt(2, Integer.parseInt(password.trim()));
                 //buoc 6: thuc thi cau lenh SQL
                 rs = stm.executeQuery();
                 //buoc 7: xu li result set
