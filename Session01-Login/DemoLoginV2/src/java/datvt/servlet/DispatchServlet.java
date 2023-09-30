@@ -5,26 +5,26 @@
  */
 package datvt.servlet;
 
-import datvt.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author datvt
+ * @author LENOVO
  */
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "DispatchServlet", urlPatterns = {"/DispatchServlet"})
+public class DispatchServlet extends HttpServlet {
 
-    private final String SEARCH_PAGE = "search.html";
-    private final String INVALID_PAGE = "invalid.html";
-
+    private final String PAGE_LOGIN = "login.html";
+    private final String LOGIN_CONTROLLER = "LoginServlet";//cai nay copy tu web.xml -> <servlet-name>
+    private final String SEARCH_LASTNAME_CONTROLLER = "SearchLastnameServlet";//cai nay copy trong class SearchLastnameServlet -> @WebServlet -> url-pattern
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,42 +36,48 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String url = PAGE_LOGIN;
+
+        //1. Xac dinh user se click button cua Login hay Search
+        //tao bien String luu value cua parameter btAction
         String button = request.getParameter("btAction");
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url = INVALID_PAGE;
-        try {//dong if button.equals ko can nua vi luc nay Dispatcher se xu ly
-            //if (button.equals("Login")) 
-            //{
-                String username = request.getParameter("txtUsername");
-                String password = request.getParameter("txtPassword");
-                //2.call DAO
-                //2.1 Create DAO
-                RegistrationDAO dao = new RegistrationDAO();
-                //2.2 call method DAO
-                boolean result = dao.checkLogin(username, password);
-                //3.process
-                if (result) {
-                    url = SEARCH_PAGE;
-                    //end user clicked Login button
-                }
-            //}
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+        //luon check truoc gia  tri button co bang null hay ko
+        try {
+            if (button == null) {
+                //day la noi ma moi vao trong login, 
+                //nen la button luc nay ko co value
+            }
+            if (button.equals("Login")) { //neu value cua button == Login nhu trong login.html
+                //khai bao 1 bien la LOGIN_CONTROLLER di
+                //neu value.equals "Login" thi chuyen duong dan ve class LoginServlet xu ly.
+                //buoc so 1 tao view
+                //buoc so 2 map tinh nang moi vao trong dieu phoi
+                url = LOGIN_CONTROLLER;
+                
+            }
+            if (button.equals("Search")) {
+                //di len khai bao SEARCH_LASTNAME_CONTROLLER
+                //neu value.equals "Search" thi chuyen ve class SearchLastNameServlet xu ly' 
+                url = SEARCH_LASTNAME_CONTROLLER;
+                //buoc so 3: tao servlet chuc nang
+            }
+
         } finally {
-            //4.return to browser
-            //response.sendRedirect(url);
-            //nho vao day doi thanh RequestDispatcher luon
+            //tu nay ve sau dung dieu phoi dispatcher.
+            //TAT CA MOI THU PHAI QUA THANG DIEU PHOI
+            //tao requestDispatcher -> lay url giu do'
             RequestDispatcher rd = request.getRequestDispatcher(url);
+            //sau do forward(req, resps)
             rd.forward(request, response);
-            out.close();
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

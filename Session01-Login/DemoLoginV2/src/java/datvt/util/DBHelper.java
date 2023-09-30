@@ -6,7 +6,7 @@
 package datvt.util;
 //NHỚ IMPORT THƯ VIỆN JDBC4.JAR TRONG LIBRARIES CỦA DỰ ÁN
 //NHỚ NHỚ NHỚ NHỚ NHỚ NHỚ
-//MÀY KHÔNG NẠP THƯ VIỆN VÀO THÌ NÓ GIAO TIẾP VỚI DB KIỂU B GÌ?????????????????
+//MÀY KHÔNG NẠP THƯ VIỆN VÀO THÌ NÓ GIAO TIẾP VỚI DB KIỂU GÌ?????????????????
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;

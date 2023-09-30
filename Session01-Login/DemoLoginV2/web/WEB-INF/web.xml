@@ -15,7 +15,8 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>
-            login.html
+            <!-- NHO LA TU NAY VE SAU SELCOME FILE O DAU LA DO DISPATCHER QUYET DINH -->
+            DispatchServlet
         </welcome-file>
     </welcome-file-list>
 </web-app>
