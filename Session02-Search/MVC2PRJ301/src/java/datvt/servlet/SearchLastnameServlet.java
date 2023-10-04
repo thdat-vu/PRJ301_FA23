@@ -6,25 +6,26 @@
 package datvt.servlet;
 
 import datvt.registration.RegistrationDAO;
+import datvt.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import javax.naming.NamingException;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author datvt
+ * @author LENOVO
  */
-public class LoginServlet extends HttpServlet {
-
+@WebServlet(name = "SearchLastnameServlet", urlPatterns = {"/SearchLastnameServlet"})
+public class SearchLastnameServlet extends HttpServlet {
     private final String SEARCH_PAGE = "search.html";
-    private final String INVALID_PAGE = "invalid.html";
-
+    private final String RESULT_SEARCH_PAGE = "search.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,42 +37,36 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //String button = request.getParameter("btAction");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url = INVALID_PAGE;
-        try {//dong if button.equals ko can nua vi luc nay Dispatcher se xu ly
-            //if (button.equals("Login")) 
-            //{
-                String username = request.getParameter("txtUsername");
-                String password = request.getParameter("txtPassword");
-                //2.call DAO
-                //2.1 Create DAO
+        //1. get all parameters
+        String searchValue = request.getParameter("txtSearchValue");
+        String url = SEARCH_PAGE;
+        try  {
+            if(!searchValue.trim().isEmpty()){
+                //2.call Dao
+                //2.1 new DAO
                 RegistrationDAO dao = new RegistrationDAO();
-                //2.2 call method DAO
-                boolean result = dao.checkLogin(username, password);
-                //3.process
-                if (result) {
-                    url = SEARCH_PAGE;
-                    //end user clicked Login button
-                }
-            //}
-
-        } catch (SQLException ex) {
+                //2.2 call method searchLastname()
+                dao.searchLastName(searchValue);
+                //3. process
+                List<RegistrationDTO> result = dao.getAccounts();
+                url = RESULT_SEARCH_PAGE;
+                //setAttribute de luu gia tri result DTO
+                request.setAttribute("RESULT_SEARCH_PAGE", result);
+            }//end user typed valid value
+        }catch(ClassNotFoundException ex){
             ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
+        }catch(SQLException ex){
             ex.printStackTrace();
-        } finally {
-            //4.return to browser
-            //response.sendRedirect(url);
-            //nho vao day doi thanh RequestDispatcher luon
+        }
+        finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            out.close();
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

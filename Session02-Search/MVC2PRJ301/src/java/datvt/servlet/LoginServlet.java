@@ -9,7 +9,6 @@ import datvt.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,13 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author datvt
+ * @author LENOVO
  */
 public class LoginServlet extends HttpServlet {
-
     private final String SEARCH_PAGE = "search.html";
     private final String INVALID_PAGE = "invalid.html";
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,42 +33,29 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //String button = request.getParameter("btAction");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        //We must put view in Servlet, even it can create view by out.println();
         String url = INVALID_PAGE;
-        try {//dong if button.equals ko can nua vi luc nay Dispatcher se xu ly
-            //if (button.equals("Login")) 
-            //{
-                String username = request.getParameter("txtUsername");
-                String password = request.getParameter("txtPassword");
-                //2.call DAO
-                //2.1 Create DAO
-                RegistrationDAO dao = new RegistrationDAO();
-                //2.2 call method DAO
-                boolean result = dao.checkLogin(username, password);
-                //3.process
-                if (result) {
-                    url = SEARCH_PAGE;
-                    //end user clicked Login button
-                }
-            //}
-
-        } catch (SQLException ex) {
+            String username = request.getParameter("txtUserName");
+            String password = request.getParameter("txtPassword");
+        try {
+            RegistrationDAO dao = new RegistrationDAO();
+            boolean result = dao.checkLogin(username, password);
+            if(result){
+                url = SEARCH_PAGE;
+            }
+        }catch (ClassNotFoundException ex){
             ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
+        }catch (SQLException ex){
             ex.printStackTrace();
-        } finally {
-            //4.return to browser
-            //response.sendRedirect(url);
-            //nho vao day doi thanh RequestDispatcher luon
+        }finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
-            out.close();
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

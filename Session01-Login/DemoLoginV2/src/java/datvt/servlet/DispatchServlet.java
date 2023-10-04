@@ -24,7 +24,7 @@ public class DispatchServlet extends HttpServlet {
     private final String PAGE_LOGIN = "login.html";
     private final String LOGIN_CONTROLLER = "LoginServlet";//cai nay copy tu web.xml -> <servlet-name>
     private final String SEARCH_LASTNAME_CONTROLLER = "SearchLastnameServlet";//cai nay copy trong class SearchLastnameServlet -> @WebServlet -> url-pattern
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,34 +36,37 @@ public class DispatchServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        PrintWriter out = response.getWriter();
         String url = PAGE_LOGIN;
 
         //1. Xac dinh user se click button cua Login hay Search
         //tao bien String luu value cua parameter btAction
-        String button = request.getParameter("btAction");
+        
 
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
+        
+        String button = request.getParameter("btAction");
         //luon check truoc gia  tri button co bang null hay ko
         try {
             if (button == null) {
+                out.print(button);
                 //day la noi ma moi vao trong login, 
                 //nen la button luc nay ko co value
-            }
-            if (button.equals("Login")) { //neu value cua button == Login nhu trong login.html
+            } else if (button.equals("Login")) { //neu value cua button == Login nhu trong login.html
                 //khai bao 1 bien la LOGIN_CONTROLLER di
                 //neu value.equals "Login" thi chuyen duong dan ve class LoginServlet xu ly.
                 //buoc so 1 tao view
                 //buoc so 2 map tinh nang moi vao trong dieu phoi
                 url = LOGIN_CONTROLLER;
-                
-            }
-            if (button.equals("Search")) {
+                out.println(url);
+                out.print(request.toString());
+
+            } else if (button.equals("Search")) {
                 //di len khai bao SEARCH_LASTNAME_CONTROLLER
                 //neu value.equals "Search" thi chuyen ve class SearchLastNameServlet xu ly' 
                 url = SEARCH_LASTNAME_CONTROLLER;
+                out.println(url);
+                out.print(request.toString());
                 //buoc so 3: tao servlet chuc nang
             }
 
@@ -72,6 +75,7 @@ public class DispatchServlet extends HttpServlet {
             //TAT CA MOI THU PHAI QUA THANG DIEU PHOI
             //tao requestDispatcher -> lay url giu do'
             RequestDispatcher rd = request.getRequestDispatcher(url);
+            out.print(url);
             //sau do forward(req, resps)
             rd.forward(request, response);
         }
