@@ -44,7 +44,7 @@ public class DispatchServlet extends HttpServlet {
             }
             if(button.equals("Login")){
                 url = LOGIN_CONTROLLER;
-            }if(button.equals("Search")){
+            }else if(button.equals("Search")){
                 url = SEARCH_LASTNAME_CONTROLLER; 
             }
         }finally{
