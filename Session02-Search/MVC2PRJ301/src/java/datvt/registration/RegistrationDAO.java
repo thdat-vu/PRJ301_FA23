@@ -81,7 +81,7 @@ public class RegistrationDAO implements Serializable {
             //1. Get connection
             conn = DBHelper.createConnection();
             //2. Create SQL String
-            String sql = "select username "
+            String sql = "select username ,password, lastname, isAdmin "
                     + "from Registration "
                     + "where lastname like ?";
             //3. Preapare Statement

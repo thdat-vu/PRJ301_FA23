@@ -53,7 +53,9 @@
 
         <%
                     }
-                }
+                }%>
+                <h2>No Records found</h2>
+        <%
             }
         %>
     </body>
